@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_app_header.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,10 +7,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      body: Center(
+      body: Column(
+        children: [
+          const CustomAppHeader(title: 'Главная'),
+          Expanded(
+            child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -36,6 +38,9 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+            ),
+          ),
+        ],
       ),
     );
   }

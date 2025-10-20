@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_app_header.dart';
 
 class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({super.key});
@@ -6,10 +7,11 @@ class ScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Schedule'),
-      ),
-      body: Center(
+      body: Column(
+        children: [
+          const CustomAppHeader(title: 'Расписание'),
+          Expanded(
+            child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -36,6 +38,9 @@ class ScheduleScreen extends StatelessWidget {
             ),
           ],
         ),
+            ),
+          ),
+        ],
       ),
     );
   }
