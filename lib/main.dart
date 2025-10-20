@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'screens/auth/phone_input_screen.dart';
 import 'screens/auth/verification_screen.dart';
 import 'screens/main/main_navigation_screen.dart';
+import 'screens/main/post_detail_screen.dart';
+import 'models/post.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,6 +52,13 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/home',
       builder: (context, state) => const MainNavigationScreen(),
+    ),
+    GoRoute(
+      path: '/post/:id',
+      builder: (context, state) {
+        final post = state.extra as Post;
+        return PostDetailScreen(post: post);
+      },
     ),
   ],
 );
