@@ -114,53 +114,204 @@ class _CoursesScreenState extends State<CoursesScreen> {
         itemBuilder: (context, index) {
           final post = _posts![index];
           return Card(
-            margin: const EdgeInsets.only(bottom: 12),
-            elevation: 2,
-            child: ListTile(
-              contentPadding: const EdgeInsets.all(16),
-              leading: CircleAvatar(
-                backgroundColor: Theme.of(context).primaryColor,
-                child: Text(
-                  '${post.id}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              title: Text(
-                post.title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  post.body,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              trailing: Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: Colors.grey[400],
-              ),
+            margin: const EdgeInsets.only(bottom: 16),
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
               onTap: () {
                 context.push('/post/${post.id}', extra: post);
               },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Эмитация изображения курса
+                  Container(
+                    height: 180,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: _getCourseGradient(post.id),
+                      ),
+                    ),
+                    child: Stack(
+                      children: [
+                        // Паттерн на фоне
+                        Positioned.fill(
+                          child: Opacity(
+                            opacity: 0.1,
+                            child: CustomPaint(
+                              painter: _PatternPainter(),
+                            ),
+                          ),
+                        ),
+                        // Иконка курса
+                        Center(
+                          child: Icon(
+                            _getCourseIcon(post.id),
+                            size: 80,
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                        ),
+                        // Рейтинг в углу
+                        Positioned(
+                          top: 12,
+                          right: 12,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.3),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '4.${post.id % 10}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Информация о курсе
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          post.title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          post.body,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.schedule,
+                              size: 16,
+                              color: Colors.grey[500],
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${post.id * 2} часов',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 13,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Icon(
+                              Icons.people,
+                              size: 16,
+                              color: Colors.grey[500],
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${post.id * 100}+ студентов',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
       ),
     );
   }
+
+  List<Color> _getCourseGradient(int id) {
+    final gradients = [
+      [const Color(0xFF3B82F6), const Color(0xFF2563EB)], // Blue
+      [const Color(0xFF10B981), const Color(0xFF059669)], // Green
+      [const Color(0xFF8B5CF6), const Color(0xFF7C3AED)], // Purple
+      [const Color(0xFFF59E0B), const Color(0xFFD97706)], // Orange
+      [const Color(0xFFEC4899), const Color(0xFFDB2777)], // Pink
+      [const Color(0xFF06B6D4), const Color(0xFF0891B2)], // Cyan
+      [const Color(0xFFEF4444), const Color(0xFFDC2626)], // Red
+      [const Color(0xFF6366F1), const Color(0xFF4F46E5)], // Indigo
+      [const Color(0xFF14B8A6), const Color(0xFF0D9488)], // Teal
+      [const Color(0xFFA855F7), const Color(0xFF9333EA)], // Violet
+    ];
+    return gradients[id % gradients.length];
+  }
+
+  IconData _getCourseIcon(int id) {
+    final icons = [
+      Icons.laptop_mac,
+      Icons.code,
+      Icons.design_services,
+      Icons.data_object,
+      Icons.psychology,
+      Icons.language,
+      Icons.business,
+      Icons.camera_alt,
+      Icons.music_note,
+      Icons.sports_esports,
+    ];
+    return icons[id % icons.length];
+  }
+}
+
+class _PatternPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    for (var i = 0; i < size.width; i += 40) {
+      for (var j = 0; j < size.height; j += 40) {
+        canvas.drawCircle(Offset(i.toDouble(), j.toDouble()), 15, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
