@@ -36,15 +36,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Главная',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
-            label: 'Schedule',
+            label: 'Расписание',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
-            label: 'Courses',
+            label: 'Курсы',
           ),
         ],
       ),

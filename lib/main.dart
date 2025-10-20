@@ -16,7 +16,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Flutter App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.light(
+          primary: const Color(0xFF3B82F6), // Ваш основной цвет (accent)
+          secondary: const Color(0xFF10B981), // Дополнительный цвет
+          tertiary: const Color(0xFF8B5CF6), // Третичный цвет
+          surface: Colors.white, // Цвет поверхностей (карточки, bottom sheets)
+          error: const Color(0xFFEF4444), // Цвет ошибок
+          onPrimary: Colors.white, // Цвет текста/иконок на primary
+          onSecondary: Colors.white, // Цвет текста/иконок на secondary
+          onSurface: const Color(0xFF1F2937), // Цвет текста на surface
+        ),
         useMaterial3: true,
       ),
       routerConfig: _router,
