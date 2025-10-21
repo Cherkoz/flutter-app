@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,18 +17,39 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   final _codeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Timer? _timer;
+  int _remainingSeconds = 60;
+  bool _canResend = false;
 
   @override
   void initState() {
     super.initState();
     _codeController.addListener(_onCodeChanged);
+    _startTimer();
   }
 
   @override
   void dispose() {
     _codeController.removeListener(_onCodeChanged);
     _codeController.dispose();
+    _timer?.cancel();
     super.dispose();
+  }
+
+  void _startTimer() {
+    _canResend = false;
+    _remainingSeconds = 60;
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_remainingSeconds > 0) {
+          _remainingSeconds--;
+        } else {
+          _canResend = true;
+          _timer?.cancel();
+        }
+      });
+    });
   }
 
   void _onCodeChanged() {
@@ -109,14 +131,21 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 ),
                 const SizedBox(height: 24),
                 TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Код отправлен'),
-                      ),
-                    );
-                  },
-                  child: const Text('Отправить код повторно'),
+                  onPressed: _canResend
+                      ? () {
+                          _startTimer();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Код отправлен'),
+                            ),
+                          );
+                        }
+                      : null,
+                  child: Text(
+                    _canResend
+                        ? 'Отправить код повторно'
+                        : 'Отправить код повторно через $_remainingSeconds сек',
+                  ),
                 ),
               ],
             ),
