@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'schedule_screen.dart';
 import 'courses_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -15,7 +14,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final List<Widget> _pages = [
     const HomeScreen(),
-    const ScheduleScreen(),
     const CoursesScreen(),
   ];
 
@@ -37,10 +35,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Главная',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Расписание',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
