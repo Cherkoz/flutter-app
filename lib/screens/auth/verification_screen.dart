@@ -18,9 +18,25 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    _codeController.addListener(_onCodeChanged);
+  }
+
+  @override
   void dispose() {
+    _codeController.removeListener(_onCodeChanged);
     _codeController.dispose();
     super.dispose();
+  }
+
+  void _onCodeChanged() {
+    if (_codeController.text.length == 6) {
+      // Используем addPostFrameCallback чтобы избежать ошибок во время build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _submit();
+      });
+    }
   }
 
   void _submit() {
@@ -55,13 +71,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 ),
                 const SizedBox(height: 32),
                 Text(
-                  'Enter verification code',
+                  'Введите код',
                   style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'We sent a code to ${widget.phoneNumber}',
+                  'Мы отправили код на ${widget.phoneNumber}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -73,7 +89,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   keyboardType: TextInputType.number,
                   maxLength: 6,
                   decoration: const InputDecoration(
-                    labelText: 'Verification Code',
+                    labelText: 'Введите код',
                     hintText: '000000',
                     prefixIcon: Icon(Icons.pin),
                     border: OutlineInputBorder(),
@@ -90,33 +106,17 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     }
                     return null;
                   },
-                  onFieldSubmitted: (_) => _submit(),
                 ),
                 const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: _submit,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'Verify',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
-                    // Resend code logic would go here
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Code resent'),
+                        content: Text('Код отправлен'),
                       ),
                     );
                   },
-                  child: const Text('Resend code'),
+                  child: const Text('Отправить код повторно'),
                 ),
               ],
             ),
